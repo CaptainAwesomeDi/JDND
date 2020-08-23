@@ -29,6 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -97,6 +98,7 @@ public class CarControllerTest {
                 .andExpect(jsonPath("$._embedded.carList[0].condition").value("USED"))
                 .andExpect(jsonPath("$._embedded.carList[0].details.model").value("Impala"));
 
+        verify(carService, times(1)).list();
     }
 
     /**
@@ -112,6 +114,7 @@ public class CarControllerTest {
                 .andExpect(jsonPath("$.condition").value("USED"))
                 .andExpect(jsonPath("$.details.model").value("Impala"));
 
+        verify(carService, times(1)).findById(anyLong());
     }
 
     /**
@@ -124,6 +127,7 @@ public class CarControllerTest {
         mvc.perform(delete("/cars/1"))
                 .andExpect(status().isNoContent());
 
+        verify(carService, times(1)).delete(anyLong());
     }
 
     @Test
