@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.util.Optional;
 
 public class UserControllerTest {
 
@@ -84,5 +85,19 @@ public class UserControllerTest {
         assertEquals("test", user.getUsername());
         assertEquals("Hashed", user.getPassword());
 
+    }
+
+    @Test
+    public void findUserByIdHappyPath() {
+        String username = "test";
+        Cart cart = new Cart();
+        User user = new User();
+        user.setId(0);
+        user.setUsername(username);
+        user.setPassword("Hashed");
+        user.setCart(cart);
+        when(userRepo.findById(user.getId())).thenReturn(Optional.of(user));
+        final ResponseEntity<User> response = userController.findById(user.getId());
+        assertEquals(200,response.getStatusCodeValue());
     }
 }
