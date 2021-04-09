@@ -34,7 +34,7 @@ public class UserController {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@GetMapping("/id/{id}")
 	public ResponseEntity<User> findById(@PathVariable Long id) {
@@ -54,7 +54,7 @@ public class UserController {
 
 		if (createUserRequest.getPassword().length() < 7 ||
 				!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
-			log.error("There is an error with this password. Unable to create user {}", createUserRequest.getUsername());
+			logger.error("There is an error with this password. Unable to create user: {}", createUserRequest.getUsername());
 			return ResponseEntity.badRequest().build();
 		}
 
@@ -63,7 +63,7 @@ public class UserController {
 		cartRepository.save(cart);
 		user.setCart(cart);
 		userRepository.save(user);
-		log.info("A new user has been created with this username : {}", createUserRequest.getUsername());
+		logger.info("A new user has been created with this username :{}", createUserRequest.getUsername());
 		return ResponseEntity.ok(user);
 	}
 	
